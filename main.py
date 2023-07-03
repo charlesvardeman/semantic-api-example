@@ -1,31 +1,39 @@
+# Path: main.py
 from fastapi import FastAPI
-from pydantic import BaseModel
+from models import Dataset, Identifier
 
 app = FastAPI()
 
-class Dataset(BaseModel):
-    name: str
-    description: str
-    url: str
-    keywords: list[str]
-    license: str
+@app.get("/")
+def read_main():
+    return {"message": "Hello, World!"}
 
-from fastapi import FastAPI, HTTPException
+# Path: main.py
+@app.get("/dataset")
+def read_dataset():
+    return {"message": "Hello, Dataset!"}
 
-app = FastAPI()
 
-@app.get("/v1/dataset/{dataset_id}", response_model=Dataset)
+@app.get("/dataset/{dataset_id}")
 def get_dataset(dataset_id: int):
-    dataset = fetch_dataset(dataset_id)  # replace with actual function to fetch dataset
-    if not dataset:
-        raise HTTPException(status_code=404, detail="Dataset not found")
-    return {
-        "@context": "https://schema.org/",
-        "@type": "Dataset",
-        "name": dataset.name,
-        "description": dataset.description,
-        "url": dataset.url,
-        "keywords": dataset.keywords,
-        "license": dataset.license,
-    }
+    # For now, return a hard-coded dataset
+    dataset = Dataset(
+        name="Test Dataset",
+        description="This is a test dataset",
+        url="http://example.com/datasets/1",
+        sameAs="http://example.com/datasets/1",
+        version="1.0",
+        isAccessibleForFree=True,
+        keywords=["test", "dataset"],
+        identifier=Identifier(identifier="doi:10.1000/test"),
+        variableMeasured="Test variable"
+    )
+    return {"@context": "https://schema.org/", "@type": "Dataset", **dataset.dict()}
 
+
+
+# Create a main function that runs the application using uvicorn.
+# Path: main.py
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

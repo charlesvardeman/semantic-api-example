@@ -1,0 +1,6 @@
+{
+  "@context": {
+    "@vocab": "http://schema.org/",
+    "message": "http://schema.org/text"
+  }
+}

@@ -27,8 +27,9 @@
 			"extensions": [
 				"ms-python.python",
 				"GitHub.copilot",
-                "ms-azuretools.vscode-docker",
-				"GitHub.codespaces"
+				"ms-azuretools.vscode-docker",
+				"GitHub.codespaces",
+				"GitHub.copilot-chat"
 			]
 		}
 	},
